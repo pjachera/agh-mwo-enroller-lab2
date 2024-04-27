@@ -22,6 +22,19 @@ public class ParticipantService {
         return query.list();
     }
 
+    public Collection<Participant> getAll(String loginValue, String sortBy, String sortOrder) {
+        String hql = "FROM Participant WHERE login LIKE :login";
+        if(sortBy.equals("login")) {
+            hql += " ORDER by " + sortBy;
+            if (sortOrder.equals("ASC") || sortOrder.equals("DESC")) {
+                hql += " " + sortOrder;
+            }
+        }
+        Query query = connector.getSession().createQuery(hql);
+        query.setParameter("login", "%" + loginValue + "%");
+        return query.list();
+    }
+
     public Participant findByLogin(String login) {
         return connector.getSession().get(Participant.class, login);
     }
@@ -44,5 +57,7 @@ public class ParticipantService {
         connector.getSession().delete(participant);
         transaction.commit();
     }
+
+
 
 }

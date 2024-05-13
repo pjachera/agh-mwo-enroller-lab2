@@ -1,5 +1,7 @@
 package com.company.enroller.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -30,4 +32,5 @@ public class Participant {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 }

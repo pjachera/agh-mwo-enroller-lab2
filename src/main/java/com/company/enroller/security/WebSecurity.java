@@ -29,6 +29,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Value("${security.issuer}")
     private String issuer;
 
+    @Value("${security.token_expiration_in_seconds}")
     private int tokenExpiration;
 
     @Override

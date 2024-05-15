@@ -11,7 +11,8 @@ import java.util.Collection;
 @Component("participantService")
 public class ParticipantService {
 
-    private final PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
+
     DatabaseConnector connector;
 
     public ParticipantService(PasswordEncoder passwordEncoder) {
@@ -44,12 +45,8 @@ public class ParticipantService {
 
     public Participant add(Participant participant) {
         Transaction transaction = connector.getSession().beginTransaction();
-       // PasswordEncoder passwordEncoder;
-
-
         String hashedPassword = passwordEncoder.encode(participant.getPassword());
         participant.setPassword(hashedPassword);
-
         connector.getSession().save(participant);
         transaction.commit();
         return participant;

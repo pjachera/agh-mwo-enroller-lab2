@@ -24,11 +24,8 @@ public class MeetingService {
 		return query.list();
 	}
 
-
 	public Meeting findById(Long id) {
-
 			return session.get(Meeting.class, id);
-
 	}
 
 	public Meeting add(Meeting meeting) {
@@ -49,5 +46,6 @@ public class MeetingService {
 		session.delete(meeting);
 		transaction.commit();
 	}
+
 
 }

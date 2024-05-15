@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+
 @RestController
 @RequestMapping("/meetings")
 public class MeetingRestController {
 
     @Autowired
     MeetingService meetingService;
+
+    @Autowired
+    ParticipantService participantService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<?> getMeetings() {
@@ -44,6 +48,37 @@ public class MeetingRestController {
         return new ResponseEntity<Meeting>(meeting, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/{id}/participants/{login}", method = RequestMethod.POST)
+    public ResponseEntity<?> addParticipant(@PathVariable("id") Long id,
+                                             @PathVariable("login") String login) {
+
+        Participant participant = participantService.findByLogin(login);
+        Meeting meeting = meetingService.findById(id);
+        meeting.addParticipant(participant);
+        meetingService.update(meeting);
+        return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/participants", method = RequestMethod.GET)
+    public ResponseEntity<?> addParticipant(@PathVariable("id") Long id) {
+
+        Meeting meeting = meetingService.findById(id);
+        Collection<Participant> participants = meeting.getParticipants();
+
+        return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/participants/{login}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteParticipant(@PathVariable("id") Long id,
+                                            @PathVariable("login") String login) {
+
+        Participant participant = participantService.findByLogin(login);
+        Meeting meeting = meetingService.findById(id);
+        meeting.removeParticipant(participant);
+        meetingService.update(meeting);
+        return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         Meeting meeting = meetingService.findById(id);
@@ -51,7 +86,7 @@ public class MeetingRestController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         meetingService.delete(meeting);
-        return new ResponseEntity<Participant>(HttpStatus.OK);
+        return new ResponseEntity<Meeting>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -64,7 +99,7 @@ public class MeetingRestController {
         meeting.setDescription(updatedMeeting.getDescription());
         meeting.setTitle(updatedMeeting.getTitle());
         meetingService.update(meeting);
-        return new ResponseEntity<Participant>(HttpStatus.OK);
+        return new ResponseEntity<Meeting>(HttpStatus.OK);
     }
 
 }

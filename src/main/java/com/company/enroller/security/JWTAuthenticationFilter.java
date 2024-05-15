@@ -28,11 +28,14 @@ import java.util.Date;
 public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private AuthenticationManager authenticationManager;
 
-    private final String secret;
+    @Value("${security.secret}")
+    private String secret;
 
-    private final String issuer;
+    @Value("${security.issuer}")
+    private String issuer;
 
-    private final int tokenExpiration;
+    @Value("${security.token_expiration_in_seconds}")
+    private int tokenExpiration;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, String secret, String issuer, int tokenExpiration) {
         super(new AntPathRequestMatcher("/tokens", HttpMethod.POST.name()));

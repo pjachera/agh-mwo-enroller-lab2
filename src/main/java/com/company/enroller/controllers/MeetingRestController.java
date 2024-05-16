@@ -48,7 +48,7 @@ public class MeetingRestController {
         return new ResponseEntity<Meeting>(meeting, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{id}/participants", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/participants/{login}", method = RequestMethod.POST)
     public ResponseEntity<?> addParticipant(@PathVariable("id") Long id,
                                              @PathVariable("login") String login) {
 
